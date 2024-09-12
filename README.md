@@ -29,7 +29,7 @@
 Este projeto é uma etapa técnica do processo seletivo para a empresa Localiza/Mobi7. O objetivo é desenvolver uma tabela de frotas que consome dados de uma API fornecida pela empresa. A aplicação foi criada utilizando Angular e TypeScript, com SCSS para estilização, garantindo uma interface moderna. O foco é na apresentação clara e eficiente das informações da frota, permitindo uma visualização fácil e intuitiva dos dados.
 
 
-Acesse via Browser: [Plataforma de Gestão de Frotas]()
+Acesse via Browser | Deploy: [Plataforma de Gestão de Frotas](https://code-task-plataforma-gestao-frotas.vercel.app/)
 
 ---
 

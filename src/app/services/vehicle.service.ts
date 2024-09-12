@@ -10,8 +10,6 @@ import { VehicleWithPOIs } from '../models/vehicleWithPOIs.model';
 })
 export class VehicleService {
 
-  vehicleWithPOIs!: VehicleWithPOIs[];
-
   constructor(private http: HttpClient) { }
 
   getPlacas(): Observable<string[]> {
@@ -38,141 +36,6 @@ export class VehicleService {
   getAllPOIs(): Observable<POI[]> {
     return this.http.get<POI[]>('https://challenge-backend.mobi7.io/pois');
   }
-
-  // Função para calcular a distância entre dois pontos geográficos
-  calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
-    const R = 6371e3; // Raio da Terra em metros
-    const toRadians = (degrees: number) => degrees * (Math.PI / 180);
-
-    const φ1 = toRadians(lat1);
-    const φ2 = toRadians(lat2);
-    const Δφ = toRadians(lat2 - lat1);
-    const Δλ = toRadians(lon2 - lon1);
-
-    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-              Math.cos(φ1) * Math.cos(φ2) *
-              Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-    return R * c; // Distância em metros
-  }
-
-
-// Função para calcular a duração total e por data
-private calculatePOIDurations(positions: Position[], latitude: number, longitude: number, radius: number): { durationsByDate: { date: string, duration: string }[], totalDuration: string } {
-  const durationsByDate: { [key: string]: number } = {}; // Armazena duração total por data
-  let entryTime: Date | null = null; // Armazena o momento de entrada no local
-  let totalDuration = 0; // Duração total por POI
-
-  for (const position of positions) {
-    const positionDate = new Date(position.data);
-    const distance = this.calculateDistance(position.latitude, position.longitude, latitude, longitude);
-
-    if (distance <= radius && !position.ignicao) {
-      if (!entryTime) {
-        entryTime = positionDate; // Marca a hora de entrada
-      }
-    } else {
-      if (entryTime) {
-        totalDuration += this.splitDurationByDates(entryTime, positionDate, durationsByDate);
-        entryTime = null; // Reseta o tempo de entrada
-      }
-    }
-  }
-
-  // Se ainda houver uma entrada ativa (não teve saída), processar a última posição
-  if (entryTime) {
-    const lastPositionDate = new Date(positions[positions.length - 1].data);
-    totalDuration += this.splitDurationByDates(entryTime, lastPositionDate, durationsByDate);
-  }
-
-  return {
-    totalDuration: this.formatDuration(totalDuration),
-    durationsByDate: Object.keys(durationsByDate).map(date => ({
-      date,
-      duration: this.formatDuration(durationsByDate[date])
-    }))
-  };
-}
-
-  // Função para dividir a duração em dias e somar no objeto durationsByDate
-  // private splitDurationByDates(entryTime: Date, exitTime: Date, durationsByDate: { [key: string]: number }): number {
-  //   let totalDuration = 0;
-
-  //   // Processar cada dia de permanência
-  //   while (entryTime < exitTime) {
-  //     const entryDateStr = entryTime.toISOString().split('T')[0]; // Data no formato YYYY-MM-DD
-
-  //     // Determinar o final do dia atual (23:59:59 do mesmo dia)
-  //     const endOfDay = new Date(entryTime);
-  //     endOfDay.setHours(23, 59, 59, 999);
-
-  //     // Comparar o exitTime com o final do dia, e usar o menor deles para calcular a duração
-  //     const durationForThisDay = Math.min(exitTime.getTime(), endOfDay.getTime()) - entryTime.getTime();
-  //     totalDuration += durationForThisDay;
-
-  //     // Adicionar a duração deste dia ao objeto durationsByDate
-  //     if (!durationsByDate[entryDateStr]) {
-  //       durationsByDate[entryDateStr] = 0;
-  //     }
-  //     durationsByDate[entryDateStr] += durationForThisDay;
-
-  //     // Atualizar entryTime para o início do próximo dia
-  //     entryTime = new Date(endOfDay.getTime() + 1); // Mudar para 00:00:00 do próximo dia
-  //   }
-
-  //   return totalDuration;
-  // }
-
-
-  private splitDurationByDates(entryTime: Date, exitTime: Date, durationsByDate: { [key: string]: number }): number {
-    let totalDuration = 0;
-
-    // Processar cada dia de permanência
-    while (entryTime < exitTime) {
-      const entryDateStr = entryTime.toISOString().split('T')[0]; // Data no formato YYYY-MM-DD
-
-      // Determinar o final do dia atual à meia-noite
-      const endOfDay = new Date(entryTime);
-      endOfDay.setHours(23, 59, 59, 999); // Final do dia (23:59:59)
-
-      // Comparar o exitTime com o final do dia e usar o menor deles para calcular a duração
-      const durationForThisDay = Math.min(exitTime.getTime(), endOfDay.getTime()) - entryTime.getTime();
-      totalDuration += durationForThisDay;
-
-      // Adicionar a duração deste dia ao objeto durationsByDate
-      if (!durationsByDate[entryDateStr]) {
-        durationsByDate[entryDateStr] = 0;
-      }
-      durationsByDate[entryDateStr] += durationForThisDay;
-
-      // Atualizar entryTime para o início do próximo dia (meia-noite do próximo dia)
-      entryTime = new Date(endOfDay);
-      entryTime.setHours(0, 0, 0, 0); // Ajustar para 00:00:00 do próximo dia
-      entryTime.setDate(entryTime.getDate() + 1); // Incrementar para o próximo dia
-    }
-
-    return totalDuration;
-  }
-
-
-
-
-  private formatDuration(durationMs: number): string {
-    const totalMinutes = Math.floor(durationMs / (1000 * 60));
-    const days = Math.floor(totalMinutes / (24 * 60));
-    const hours = Math.floor((totalMinutes % (24 * 60)) / 60);
-    const minutes = totalMinutes % 60;
-
-    let result = '';
-    if (days > 0) result += `${days} dias `;
-    if (hours > 0) result += `${hours} horas `;
-    if (minutes > 0) result += `${minutes} minutos`;
-
-    return result.trim();
-  }
-
-
 
   getAllVehiclesWithPOIs(): Observable<VehicleWithPOIs[]> {
     return forkJoin({
@@ -228,6 +91,115 @@ private calculatePOIDurations(positions: Position[], latitude: number, longitude
         return of([]); // Retorna um array vazio em caso de erro
       })
     );
+  }
+
+  // Função para calcular a distância entre dois pontos geográficos
+  calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+    const R = 6371e3; // Raio da Terra em metros
+    const toRadians = (degrees: number) => degrees * (Math.PI / 180);
+
+    const φ1 = toRadians(lat1);
+    const φ2 = toRadians(lat2);
+    const Δφ = toRadians(lat2 - lat1);
+    const Δλ = toRadians(lon2 - lon1);
+
+    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+              Math.cos(φ1) * Math.cos(φ2) *
+              Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return R * c; // Distância em metros
+  }
+
+
+  // Função para calcular a duração total e por data
+  private calculatePOIDurations(positions: Position[], latitude: number, longitude: number, radius: number): { durationsByDate: { date: string, duration: string }[], totalDuration: string } {
+    const durationsByDate: { [key: string]: number } = {}; // Armazena duração total por data
+    let entryTime: Date | null = null; // Armazena o momento de entrada no local
+    let totalDuration = 0; // Duração total por POI
+
+    for (const position of positions) {
+      const positionDate = new Date(position.data);
+      const distance = this.calculateDistance(position.latitude, position.longitude, latitude, longitude);
+
+      if (distance <= radius && !position.ignicao) {
+        if (!entryTime) {
+          entryTime = positionDate; // Marca a hora de entrada
+        }
+      } else {
+        if (entryTime) {
+          totalDuration += this.splitDurationByDates(entryTime, positionDate, durationsByDate);
+          entryTime = null; // Reseta o tempo de entrada
+        }
+      }
+    }
+
+    // Se ainda houver uma entrada ativa (não teve saída), processar a última posição
+    if (entryTime) {
+      const lastPositionDate = new Date(positions[positions.length - 1].data);
+      totalDuration += this.splitDurationByDates(entryTime, lastPositionDate, durationsByDate);
+    }
+
+    return {
+      totalDuration: this.formatDuration(totalDuration),
+      durationsByDate: Object.keys(durationsByDate).map(date => ({
+        date,
+        duration: this.formatDuration(durationsByDate[date])
+      }))
+    };
+  }
+
+
+  private splitDurationByDates(entryTime: Date, exitTime: Date, durationsByDate: { [key: string]: number }): number {
+    let totalDuration = 0;
+    let isFirstDay = true; // Variável para identificar o primeiro dia
+
+    // Processar cada dia de permanência
+    while (entryTime < exitTime) {
+      const entryDateStr = entryTime.toISOString().split('T')[0]; // Data no formato YYYY-MM-DD
+
+      // Determinar o final do dia atual (23:59:59) garantindo que o fuso horário seja mantido
+      const endOfDay = new Date(entryTime);
+      endOfDay.setUTCHours(23, 59, 59, 999); // Definir o final do dia (23:59:59 UTC)
+
+      if (isFirstDay) {
+        // No primeiro dia, usamos o horário de entrada real
+        isFirstDay = false; // Após o primeiro dia, tratamos os dias subsequentes
+      } else {
+        // Para os dias subsequentes, começamos sempre às 00:00:00
+        console.log("Dia subsequente, começando às 00:00:00.");
+        entryTime.setUTCHours(0, 0, 0, 0); // Início do dia às 00:00:00 UTC
+      }
+
+      // Comparar o exitTime com o final do dia e usar o menor deles para calcular a duração
+      const durationForThisDay = Math.min(exitTime.getTime(), endOfDay.getTime()) - entryTime.getTime();
+      totalDuration += durationForThisDay;
+
+      // Adicionar a duração deste dia ao objeto durationsByDate
+      if (!durationsByDate[entryDateStr]) {
+        durationsByDate[entryDateStr] = 0;
+      }
+      durationsByDate[entryDateStr] += durationForThisDay;
+      // Atualizar entryTime para o próximo dia, sempre começando à meia-noite
+      entryTime = new Date(endOfDay.getTime() + 1); // Próximo dia
+      entryTime.setUTCHours(0, 0, 0, 0); // Garantir que o próximo dia comece às 00:00:00 UTC
+    }
+
+    return totalDuration;
+  }
+
+  private formatDuration(durationMs: number): string {
+    const totalMinutes = Math.floor(durationMs / (1000 * 60));
+    const days = Math.floor(totalMinutes / (24 * 60));
+    const hours = Math.floor((totalMinutes % (24 * 60)) / 60);
+    const minutes = totalMinutes % 60;
+
+    let result = '';
+    if (days > 0) result += `${days} dias `;
+    if (hours > 0) result += `${hours} horas `;
+    if (minutes > 0) result += `${minutes} minutos`;
+
+    return result.trim();
   }
 }
 

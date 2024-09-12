@@ -1,4 +1,3 @@
-import { POIsService } from './../../services/pois.service';
 import { VehicleService } from './../../services/vehicle.service';
 import { Component, OnInit } from '@angular/core';
 import { VehicleWithPOIs } from 'src/app/models/vehicleWithPOIs.model';
@@ -15,7 +14,7 @@ export class TableComponent implements OnInit {
   placas!: string[];
 
 
-  constructor( private vehicleService: VehicleService, private POIsService: POIsService) { }
+  constructor( private vehicleService: VehicleService) { }
 
   ngOnInit(): void {
 
@@ -24,7 +23,6 @@ export class TableComponent implements OnInit {
       console.log(this.placas)
       }
     )
-
     this.vehicleService.getAllVehiclesWithPOIs().subscribe( data => {
       this.allVehicles = data;
       this.filteredVehicles = data;
@@ -41,44 +39,7 @@ export class TableComponent implements OnInit {
   }
 
 
-
-
-
-  // onFilterApplied(filter: { placa: string, data: string | undefined }) {
-  //   console.log('Filtro aplicado:', filter);
-
-  //   // Verifica se há filtro de placa ou de data
-  //   const hasPlacaFilter = filter.placa && filter.placa !== 'Todas';
-  //   const hasDateFilter = !!filter.data;
-
-  //   // Formata a data do filtro para o formato yyyy-mm-dd, se fornecida
-  //   const formattedFilterDate = hasDateFilter ? new Date(filter.data!).toISOString().split('T')[0] : '';
-
-  //   // Filtra os veículos
-  //   this.filteredVehicles = this.allVehicles.filter(vehicle => {
-  //     // Se o filtro de placa for fornecido, verifica se corresponde
-  //     const matchesPlaca = hasPlacaFilter ? vehicle.placa === filter.placa : true;
-
-  //     // Se o filtro de data for fornecido, verifica se ao menos um POI corresponde à data
-  //     const matchesData = hasDateFilter
-  //       ? vehicle.POIs.some(poi => {
-  //           const poiDate = new Date(poi.data_posicao);
-  //           const formattedPOIDate = `${poiDate.getFullYear()}-${(poiDate.getMonth() + 1).toString().padStart(2, '0')}-${poiDate.getDate().toString().padStart(2, '0')}`;
-  //           return formattedPOIDate === formattedFilterDate;
-  //         })
-  //       : true;
-
-  //     // Retorna verdadeiro apenas se o veículo corresponder ao filtro de placa e/ou ao filtro de data
-  //     return matchesPlaca && matchesData;
-  //   });
-
-  //   console.log(this.filteredVehicles); // Exibe os veículos filtrados
-  // }
-
-
   onFilterApplied(filter: { placa: string, data: string | undefined }) {
-    console.log('Filtro aplicado:', filter);
-
     // Verifica se há filtro de placa ou de data
     const hasPlacaFilter = filter.placa && filter.placa !== 'Todas';
     const hasDateFilter = !!filter.data;
@@ -118,14 +79,6 @@ export class TableComponent implements OnInit {
       .filter(vehicle => vehicle !== null) as VehicleWithPOIs[];
 
     this.filteredVehicles = filteredVehicles;
-
-    console.log(this.filteredVehicles); // Exibe os veículos filtrados
   }
-
-
-
-
-
-
 
 }
