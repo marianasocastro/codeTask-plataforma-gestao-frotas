@@ -1,0 +1,12 @@
+<div class="filter">
+  <form (ngSubmit)="applyFilter()" class="container">
+    <select [(ngModel)]="placa" name="placa">
+      <option value="" disabled selected>Placa</option>
+      <option value="Todas">Todas</option>
+      <option *ngFor="let placa of placas" [value]="placa">{{ placa }}</option>
+    </select>
+    <input type="date" [(ngModel)]="data" name="data">
+    <button type="submit">FILTRAR</button>
+  </form>
+</div>
+

@@ -1,0 +1,59 @@
+<app-filter [placas]=placas (filterApplied)="onFilterApplied($event)" ></app-filter>
+
+<table class="container">
+  <thead>
+    <tr>
+      <th>Placa</th>
+      <th>POI</th>
+      <th>Data</th>
+      <th>Duração por Data</th>
+      <th>Duração Total no POI</th>
+      <th>Maps</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let vehicle of filteredVehicles">
+      <ng-container *ngFor="let poi of vehicle.positionsByPOI; let poiIndex = index;">
+        <ng-container *ngFor="let position of poi.positions; let positionIndex = index" class="row">
+          <tr [attr.data-index]="positionIndex" class="row">
+            <!-- Renderiza a placa apenas na primeira linha do primeiro POI -->
+            <td *ngIf="poiIndex === 0 && positionIndex === 0" [attr.rowspan]="getTotalPositions(vehicle)">
+              {{ vehicle.placa }}
+            </td>
+            <!-- Renderiza o nome do POI apenas na primeira linha do respectivo POI -->
+            <td *ngIf="positionIndex === 0" [attr.rowspan]="poi.positions.length">
+              {{ poi.poi_name }}
+            </td>
+            <!-- Renderiza a data e a duração de cada posição -->
+            <td>{{ position.date }}</td>
+            <td>{{ position.duration }}</td>
+            <!-- Tempo total no POI aparece apenas na primeira linha do POI -->
+            <td *ngIf="positionIndex === 0" [attr.rowspan]="poi.positions.length">
+              {{ poi.duration }}
+            </td>
+            <!-- Maps também aparece apenas na primeira linha do POI -->
+            <td *ngIf="positionIndex === 0" [attr.rowspan]="poi.positions.length">
+              <a class="paragraph-underline" [href]="'https://maps.google.com/?q=' + poi.latitude + ',' + poi.longitude" target="_blank">
+                Ver no maps
+              </a>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

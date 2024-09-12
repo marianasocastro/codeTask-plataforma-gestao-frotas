@@ -1,0 +1,46 @@
+{
+  "POIs": [
+    {
+      "nome": "PONTO A",
+      "raio": 300,
+      "latitude": -25.525000,
+      "longitude": -51.550000
+    },
+    {
+      "nome": "PONTO B",
+      "raio": 400,
+      "latitude": -25.520000,
+      "longitude": -51.560000
+    },
+    {
+      "nome": "PONTO C",
+      "raio": 500,
+      "latitude": -25.515000,
+      "longitude": -51.570000
+    },
+    {
+      "nome": "PONTO D",
+      "raio": 200,
+      "latitude": -25.510000,
+      "longitude": -51.580000
+    },
+    {
+      "nome": "PONTO E",
+      "raio": 350,
+      "latitude": -25.505000,
+      "longitude": -51.590000
+    },
+    {
+      "nome": "PONTO F",
+      "raio": 250,
+      "latitude": -25.500000,
+      "longitude": -51.600000
+    },
+    {
+      "nome": "PONTO G",
+      "raio": 150,
+      "latitude": -25.495000,
+      "longitude": -51.610000
+    }
+  ]
+}

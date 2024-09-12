@@ -1,0 +1,84 @@
+{
+  "vehicles": [
+    {
+      "placa": "VEIC001",
+      "data_posicao": "2024-09-08T09:00:00-03:00",
+      "velocidade": 20,
+      "longitude": -51.550000,
+      "latitude": -25.525000,
+      "ignicao": true
+    },
+    {
+      "placa": "VEIC002",
+      "data_posicao": "2024-09-08T11:30:00-03:00",
+      "velocidade": 35,
+      "longitude": -51.560000,
+      "latitude": -25.520000,
+      "ignicao": false
+    },
+    {
+      "placa": "VEIC001",
+      "data_posicao": "2024-09-08T15:00:00-03:00",
+      "velocidade": 45,
+      "longitude": -51.570000,
+      "latitude": -25.515000,
+      "ignicao": true
+    },
+    {
+      "placa": "VEIC003",
+      "data_posicao": "2024-09-09T08:30:00-03:00",
+      "velocidade": 55,
+      "longitude": -51.570000,
+      "latitude": -25.530000,
+      "ignicao": false
+    },
+    {
+      "placa": "VEIC002",
+      "data_posicao": "2024-09-09T12:00:00-03:00",
+      "velocidade": 50,
+      "longitude": -51.550000,
+      "latitude": -25.525000,
+      "ignicao": true
+    },
+    {
+      "placa": "VEIC001",
+      "data_posicao": "2024-09-09T16:00:00-03:00",
+      "velocidade": 40,
+      "longitude": -51.560000,
+      "latitude": -25.520000,
+      "ignicao": true
+    },
+    {
+      "placa": "VEIC003",
+      "data_posicao": "2024-09-09T18:30:00-03:00",
+      "velocidade": 30,
+      "longitude": -51.580000,
+      "latitude": -25.510000,
+      "ignicao": false
+    },
+    {
+      "placa": "VEIC004",
+      "data_posicao": "2024-09-08T10:00:00-03:00",
+      "velocidade": 60,
+      "longitude": -51.610000,
+      "latitude": -25.495000,
+      "ignicao": true
+    },
+    {
+      "placa": "VEIC005",
+      "data_posicao": "2024-09-09T14:00:00-03:00",
+      "velocidade": 70,
+      "longitude": -51.610000,
+      "latitude": -25.495000,
+      "ignicao": true
+    },
+    {
+      "placa": "VEIC006",
+      "data_posicao": "2024-09-08T17:00:00-03:00",
+      "velocidade": 40,
+      "longitude": -51.560000,
+      "latitude": -25.520000,
+      "ignicao": false
+    }
+  ]
+}

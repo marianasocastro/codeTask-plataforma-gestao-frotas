@@ -1,1 +1,188 @@
-/* You can add global styles to this file, and also import other style files */
+
+/*VARIAVEIS CORES
+CORES PRIMARIAS*/
+$color-dark-green:#004521;
+$color-mid-green: #01602A;
+$color-light-green:#7DDE21;
+$color-dark-grey: #4A4A4A;
+$color-light-grey: #F2F2F2;
+$color-white: #FFFFFF;
+
+/*ALERTS*/
+$color-on-error:#DA1414;
+$color-warning:#FFBC00;
+$color-success:#1E874A;
+$color-info:#008ACD;
+/*FIM VARIAVEIS CORES*/
+
+/*TEXT STYLES*/
+@mixin text-style($size, $weight, $height){
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: $size;
+    font-weight: $weight;
+    line-height: $height;
+    letter-spacing: normal;
+}
+
+.hero-1{
+  @include text-style(65px, 500, 71px);
+}
+
+.hero-2{
+  @include text-style(50px, 500, 56px);
+}
+
+.text-h1{
+  @include text-style(34px, 500, 40px);
+}
+
+.text-h2{
+  @include text-style(18px, 500, 24px);
+}
+
+.text-h3{
+  @include text-style(16px, 500, 22px);
+}
+
+.paragraph{
+  @include text-style(14px, 400, 20px);
+}
+
+.paragraph-bold{
+  @include text-style(14px, 600, 20px);
+}
+
+.paragraph-bold-underline{
+  @include text-style(14px, 600, 20px);
+  text-decoration: underline;
+}
+
+.paragraph-underline{
+  @include text-style(14px, 400, 20px);
+  text-decoration: underline;
+}
+
+.small{
+  @include text-style(12px, 400, 18px);
+}
+
+.small-medium{
+  @include text-style(12px, 500, 18px);
+}
+
+body{
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: $color-mid-green;
+}
+
+
+
+/*BOTÕES*/
+
+// .btn-primary{
+//   background: $color-primary-gradient;
+//   border-radius: 5px;
+//   border: none;
+//   padding: 9px 20px;
+//   @include text-style(14px, 600, 20px);
+//   color: $color-white;
+//   &:hover{
+//     background: $color-primary-dark;
+//     cursor: pointer;
+//   }
+// }
+
+// .btn-tertiary{
+//   background: $color-white;
+//   border-radius: 5px;
+//   border: 1px solid $color-primary-main;
+//   padding: 9px 20px;
+//   @include text-style(14px, 600, 20px);
+//   color: $color-primary-main;
+//   &:hover{
+//     background: $color-primary-main;
+//     color: $color-white;
+//     cursor: pointer;
+//   }
+// }
+
+// .btn-quintenary{
+//   background: transparent;
+//   border-radius: 5px;
+//   border: 1px solid $color-white;
+//   padding: 9px 20px;
+//   @include text-style(14px, 600, 20px);
+//   color: $color-white;
+//   &:hover{
+//     background: $color-white;
+//     color: $color-primary-main;
+//     cursor: pointer;
+//   }
+// }
+
+.container{
+  margin: 0 auto;
+  max-width: 1140px;
+}
+
+
+/*RESET CSS*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    // font: inherit;
+    vertical-align: baseline;
+}
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+*,
+*:after,
+*:before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+body{
+    font-size: 100%;
+    list-style-type: none;
+}
+/*FIM RESET CSS*/
+
+
+
+
